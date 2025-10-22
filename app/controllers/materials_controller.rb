@@ -41,7 +41,21 @@ class MaterialsController < ApplicationController
 
     def create()
 
-        material = current_user.materials.new(material_params())
+        attrs = material_params().to_h
+
+        if attrs["isbn"].to_s.strip != "" && attrs["kind"] == "book"
+
+            data = OpenLibraryClient.fetch_book_by_isbn(attrs["isbn"])
+
+            if attrs["title"].to_s.strip == "" && data[:title]
+                attrs["title"] = data[:title]
+            end
+            if attrs["pages"].to_s.strip == "" && data[:pages]
+                attrs["pages"] = data[:pages]
+            end
+        end
+
+        material = current_user.materials.new(attrs)
     
         saved = material.save()
 
