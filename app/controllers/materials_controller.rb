@@ -5,22 +5,23 @@ class MaterialsController < ApplicationController
     def index()
         materials = Material.all()
 
-        title = params[:title]
-        kind = params[:kind]
-        status = params[:status]
-        author_id = params[:author_id]
+        title       = params[:title].to_s.strip
+        kind        = params[:kind].to_s.strip
+        status      = params[:status].to_s.strip
+        author_name = params[:author].to_s.strip
+        desc_query  = params[:description].to_s.strip
+        author_id   = params[:author_id].to_s.strip
 
-        if title
-            materials = materials.where("title ILIKE ?", "%#{title}%")
-        end
-        if kind
-            materials = materials.where(kind: kind)
-        end
-        if status
-            materials = materials.where(status: status)
-        end
-        if author_id
-            materials = materials.where(author_id: author_id)
+        materials = materials.where("materials.title ILIKE ?", "%#{title}%") if title.present?
+        materials = materials.where(kind: kind)                             if kind.present?
+        materials = materials.where(status: status)                         if status.present?
+        materials = materials.where("materials.description ILIKE ?", "%#{desc_query}%") if desc_query.present?
+        materials = materials.where(author_id: author_id)                   if author_id.present?
+
+        if author_name.present?
+            materials = materials.joins(:author)
+                                .where("authors.name ILIKE ?", "%#{author_name}%")
+                                .distinct
         end
 
         # Pagination
