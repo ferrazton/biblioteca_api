@@ -4,6 +4,18 @@ class AuthorsController < ApplicationController
 
     # index, show, create, update, destroy
 
+    def index()
+        authors = Author.all()
+        authors = authors.order(created_at: :desc)
+        render(json: authors, status: 200)
+    end
+
+    def show()
+        author_id = params[:id]
+        author = Author.find(author_id)
+        render(json: author, status: 200)
+    end
+
     def create()
 
         author = Author.new(author_params())

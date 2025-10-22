@@ -4,6 +4,18 @@ class MaterialsController < ApplicationController
 
     # index, show, create, update, destroy
 
+    def index()
+        materials = Material.all()
+        materials = materials.order(created_at: :desc)
+        render(json: materials, status: 200)
+    end
+
+    def show()
+        material_id = params[:id]
+        material = Material.find(material_id)
+        render(json: material, status: 200)
+    end
+
     def create()
 
         material = current_user.materials.new(material_params())
