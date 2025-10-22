@@ -2,8 +2,6 @@ class MaterialsController < ApplicationController
     
     before_action(:authenticate_user!)
 
-    # index, show, create, update, destroy
-
     def index()
         materials = Material.all()
 
@@ -13,7 +11,6 @@ class MaterialsController < ApplicationController
         author_id = params[:author_id]
 
         if title
-            # Case-insensitive partial match (Postgres)
             materials = materials.where("title ILIKE ?", "%#{title}%")
         end
         if kind
@@ -26,7 +23,13 @@ class MaterialsController < ApplicationController
             materials = materials.where(author_id: author_id)
         end
 
-        materials = materials.order(created_at: :desc)
+        # Pagination
+        page_param     = params[:page].to_i
+        per_page_param = params[:per_page].to_i
+        page     = (page_param > 0) ? page_param : 1
+        per_page = (per_page_param > 0) ? per_page_param : 10
+
+        materials = materials.order(created_at: :desc).page(page).per(per_page)
         render(json: materials, status: 200)
     end
 
