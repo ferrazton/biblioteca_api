@@ -6,6 +6,26 @@ class MaterialsController < ApplicationController
 
     def index()
         materials = Material.all()
+
+        title = params[:title]
+        kind = params[:kind]
+        status = params[:status]
+        author_id = params[:author_id]
+
+        if title
+            # Case-insensitive partial match (Postgres)
+            materials = materials.where("title ILIKE ?", "%#{title}%")
+        end
+        if kind
+            materials = materials.where(kind: kind)
+        end
+        if status
+            materials = materials.where(status: status)
+        end
+        if author_id
+            materials = materials.where(author_id: author_id)
+        end
+
         materials = materials.order(created_at: :desc)
         render(json: materials, status: 200)
     end
