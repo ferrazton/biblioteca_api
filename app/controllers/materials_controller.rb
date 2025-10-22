@@ -69,8 +69,11 @@ class MaterialsController < ApplicationController
 
     def update()
         material_id = params[:id]
-
         material = Material.find(material_id)
+
+        if material.user_id != current_user.id
+            render(json:{ error: "Forbidden" }, status: 403) and return
+        end
 
         updated = material.update(material_params())
 

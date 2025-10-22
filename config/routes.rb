@@ -13,6 +13,6 @@ Rails.application.routes.draw do
   # root "posts#index"
   
   resources(:materials)
-  resources(:authors, only: [:index, :show, :create, :update])
+  resources(:authors, only: [:index, :show, :create]) # Update implemented but removed for simplicity
 
 end
