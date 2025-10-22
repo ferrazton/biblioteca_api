@@ -27,6 +27,19 @@ class AuthorsController < ApplicationController
         end
     end
 
+    def update()
+        author_id = params[:id]
+        author = Author.find(author_id)
+
+        updated = author.update(author_params())
+
+        if updated
+            render(json: author, status: 200)
+        else
+            render(json: {errors: author.errors.full_messages}, status: 422)
+        end
+    end
+
     private
 
     def author_params()

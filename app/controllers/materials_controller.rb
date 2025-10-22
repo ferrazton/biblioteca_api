@@ -29,6 +29,32 @@ class MaterialsController < ApplicationController
         end
     end
 
+    def update()
+        material_id = params[:id]
+
+        material = Material.find(material_id)
+
+        updated = material.update(material_params())
+
+        if updated
+            render(json: material, status: 200)
+        else
+            render(json: {errors: materials.errors.full_messages}, status: 422)
+        end
+    end
+
+    def destroy()
+        material_id = params[:id]
+        material = Material.find(material_id)
+
+        if material.user_id != current_user.id
+            render(json:{ error: "Forbidden" }, status: 403) and return
+        end
+
+        material.destroy()
+        head(204)
+    end
+
     private
 
     def material_params()
