@@ -34,6 +34,11 @@ gem "devise-jwt"
 gem "bcrypt", "~> 3.1.7"
 
 group :development, :test do
+
+  gem "rspec-rails", "~> 6.0"
+  gem "factory_bot_rails"
+  gem "faker"
+
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 
@@ -42,6 +47,11 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
 end
 
+group :test do
+  gem "simplecov", require: false
+end
 
+gem "kaminari", "~> 1.2"
