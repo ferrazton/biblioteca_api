@@ -32,6 +32,8 @@ gem "bootsnap", require: false
 gem "devise"
 gem "devise-jwt"
 gem "bcrypt", "~> 3.1.7"
+gem "rswag-api"
+gem "rswag-ui"
 
 group :development, :test do
   gem "rspec-rails", "~> 6.0"
@@ -47,8 +49,6 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 
-  gem "rswag-api"
-  gem "rswag-ui"
   gem "rswag-specs"
 end
 
