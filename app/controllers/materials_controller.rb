@@ -1,6 +1,8 @@
 class MaterialsController < ApplicationController
     
     before_action(:authenticate_user!)
+    skip_before_action(:authenticate_user!, only: [:index, :show])
+    before_action :set_material_for_owner, only: [:update, :destroy]
 
     def index()
         materials = Material.all()
@@ -97,6 +99,20 @@ class MaterialsController < ApplicationController
     end
 
     private
+
+    def set_material_for_owner
+        @material = Material.find_by(id: params[:id])
+        unless @material
+            render json: { error: "Material not found" }, status: 404 and return
+        end
+
+        # Reload user from DB to ensure IDs line up
+        current = User.find(current_user.id)
+
+        if @material.user_id != current.id
+            render json: { error: "Forbidden" }, status: 403 and return
+        end
+    end
 
     def material_params()
         permited = params.require(:material).permit(
