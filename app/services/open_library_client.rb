@@ -3,7 +3,6 @@ require "json"
 require "uri"
 
 class OpenLibraryClient
-
     ENDPOINT = "https://openlibrary.org/api/books"
 
     def self.fetch_book_by_isbn(isbn)

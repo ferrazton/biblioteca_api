@@ -1,34 +1,32 @@
 class AuthorsController < ApplicationController
-
     before_action(:authenticate_user!)
-    skip_before_action :authenticate_user!, only: [:index, :show]
+    skip_before_action :authenticate_user!, only: [ :index, :show ]
 
     # index, show, create, update, destroy
 
-    def index()
+    def index
         authors = Author.all()
         authors = authors.order(created_at: :desc)
         render(json: authors, status: 200)
     end
 
-    def show()
+    def show
         author_id = params[:id]
         author = Author.find(author_id)
         render(json: author, status: 200)
     end
 
-    def create()
-
+    def create
         author = Author.new(author_params())
 
         if author.save()
             render(json: author, status: 201)
         else
-            render(json: {errors: author.errors.full_messages}, status: 422)
+            render(json: { errors: author.errors.full_messages }, status: 422)
         end
     end
 
-    def update()
+    def update
         author_id = params[:id]
         author = Author.find(author_id)
 
@@ -37,19 +35,19 @@ class AuthorsController < ApplicationController
         if updated
             render(json: author, status: 200)
         else
-            render(json: {errors: author.errors.full_messages}, status: 422)
+            render(json: { errors: author.errors.full_messages }, status: 422)
         end
     end
 
     private
 
-    def author_params()
+    def author_params
         permited = params.require(:author).permit(
             :name,
             :kind,
             :birth_date,
             :city
         )
-        return permited
+        permited
     end
 end

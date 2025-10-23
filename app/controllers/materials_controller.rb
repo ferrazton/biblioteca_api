@@ -1,10 +1,9 @@
 class MaterialsController < ApplicationController
-    
     before_action(:authenticate_user!)
-    skip_before_action(:authenticate_user!, only: [:index, :show])
-    before_action :set_material_for_owner, only: [:update, :destroy]
+    skip_before_action(:authenticate_user!, only: [ :index, :show ])
+    before_action :set_material_for_owner, only: [ :update, :destroy ]
 
-    def index()
+    def index
         materials = Material.all()
 
         title       = params[:title].to_s.strip
@@ -36,14 +35,13 @@ class MaterialsController < ApplicationController
         render(json: materials, status: 200)
     end
 
-    def show()
+    def show
         material_id = params[:id]
         material = Material.find(material_id)
         render(json: material, status: 200)
     end
 
-    def create()
-
+    def create
         attrs = material_params().to_h
 
         if attrs["isbn"].to_s.strip != "" && attrs["kind"] == "book"
@@ -59,22 +57,22 @@ class MaterialsController < ApplicationController
         end
 
         material = current_user.materials.new(attrs)
-    
+
         saved = material.save()
 
         if saved
             render(json: material, status: 201)
         else
-            render(json: {errors: material.errors.full_messages}, status: 422)
+            render(json: { errors: material.errors.full_messages }, status: 422)
         end
     end
 
-    def update()
+    def update
         material_id = params[:id]
         material = Material.find(material_id)
 
         if material.user_id != current_user.id
-            render(json:{ error: "Forbidden" }, status: 403) and return
+            render(json: { error: "Forbidden" }, status: 403) and return
         end
 
         updated = material.update(material_params())
@@ -82,16 +80,16 @@ class MaterialsController < ApplicationController
         if updated
             render(json: material, status: 200)
         else
-            render(json: {errors: materials.errors.full_messages}, status: 422)
+            render(json: { errors: material.errors.full_messages }, status: 422)
         end
     end
 
-    def destroy()
+    def destroy
         material_id = params[:id]
         material = Material.find(material_id)
 
         if material.user_id != current_user.id
-            render(json:{ error: "Forbidden" }, status: 403) and return
+            render(json: { error: "Forbidden" }, status: 403) and return
         end
 
         material.destroy()
@@ -114,7 +112,7 @@ class MaterialsController < ApplicationController
         end
     end
 
-    def material_params()
+    def material_params
         permited = params.require(:material).permit(
             :title,
             :description,
@@ -126,6 +124,6 @@ class MaterialsController < ApplicationController
             :duration,
             :author_id
         )
-        return permited
+        permited
     end
 end
