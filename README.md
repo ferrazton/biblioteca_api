@@ -1,5 +1,3 @@
-# README
-
 # Biblioteca API
 
 A RESTful backend built with **Ruby on Rails** for managing authors and materials (books, articles, and videos).
@@ -30,7 +28,8 @@ A RESTful backend built with **Ruby on Rails** for managing authors and material
 | Auth | Devise + devise-jwt |
 | Testing | RSpec, FactoryBot, SimpleCov |
 | External API | OpenLibrary |
-| Documentation | Postman |
+| Documentation | Postman, Swagger |
+| Deploy | Render |
 
 ---
 
@@ -64,6 +63,10 @@ bin/rails db:create db:migrate
 Start the development server:
 ```bash
 bin/rails s
+```
+Or on Windows:
+```powershell
+bundle exec rails s
 ```
 Default URL:
 ```
@@ -109,7 +112,7 @@ Accept: application/json
 |--------|---------------|------|-------------------------------------------|
 | GET    | /authors      | No   | List all authors                          |
 | GET    | /authors/:id   | No   | Retrieve author details                   |
-| POST   | /authors      | Yes  | Create new author (person or institution) |
+| POST   | /authors      | Yes  | Create new author (person or institution, can't be deleted) |
 
 ### Materials
 | Method | Endpoint        | Auth | Description                                                       |
@@ -125,8 +128,9 @@ GET /materials?title=estrangeiro
 GET /materials?author=camus
 GET /materials?status=published
 ```
+**Possible parameters are: page, per_page, author, description, kind, and status.**
 
-## Postman Collection
+## Postman Collection (Recommended for manual testing)
 You can test all endpoints directly via **Postman**.
 ### Import the collection
 1. From the repository root, download and import the file:
@@ -149,6 +153,32 @@ You can test all endpoints directly via **Postman**.
 4. POST /materials -> create book, article, or video
 5. GET /materials?author=Camus -> filter results
 6. PATCH /materials/:id
+
+**NOTE**:
+
+Cleaning cookies is required if logging in an account while already logged in another (In Postman: Cookies -> Clear All Cookies).
+
+## Deploy and Swagger
+The project has been deployed through Render, and its docs can be accessed at:
+
+https://biblioteca-api-29fh.onrender.com/api-docs/index.html
+
+*(Swagger interactive documentation — select the “Production” server before testing.)*
+
+**NOTE**:
+
+The first request may take a while since free instances spin down with inactivity on Render
+
+### Example request flow
+* Register a new user
+* Sign in to get JWT
+* Copy authorization code from response header and paste it in the 'Authorize' button at the top of the screen
+    * Example code: "Bearer fgDlds123[...]"
+* Create author
+* Create material
+* List materials
+* Update material
+* Delete material
 
 ## Testing
 Prepare the test database
