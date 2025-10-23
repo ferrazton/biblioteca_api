@@ -1,0 +1,288 @@
+---
+openapi: 3.0.1
+info:
+  title: Biblioteca API
+  version: v1
+servers:
+- url: http://localhost:3000
+  description: Local
+- url: https://biblioteca-api-29fh.onrender.com
+  description: Production
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security: []
+paths:
+  "/users":
+    post:
+      summary: Register a new user
+      tags:
+      - Auth
+      parameters: []
+      responses:
+        '201':
+          description: created
+        '422':
+          description: validation error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      format: email
+                    password:
+                      type: string
+                    password_confirmation:
+                      type: string
+                  required:
+                  - email
+                  - password
+                  - password_confirmation
+              required:
+              - user
+  "/users/sign_in":
+    post:
+      summary: Login to get JWT (Authorization header)
+      tags:
+      - Auth
+      parameters: []
+      responses:
+        '200':
+          description: ok
+        '401':
+          description: unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      format: email
+                    password:
+                      type: string
+                  required:
+                  - email
+                  - password
+              required:
+              - user
+  "/authors":
+    get:
+      summary: List authors
+      tags:
+      - Authors
+      responses:
+        '200':
+          description: ok
+    post:
+      summary: Create author
+      tags:
+      - Authors
+      security:
+      - bearerAuth: []
+      parameters: []
+      responses:
+        '201':
+          description: created
+        '401':
+          description: unauthorized
+        '422':
+          description: validation error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                author:
+                  type: object
+                  properties:
+                    kind:
+                      type: string
+                      enum:
+                      - person
+                      - institution
+                    name:
+                      type: string
+                    birth_date:
+                      type: string
+                      format: date
+                    city:
+                      type: string
+                  required:
+                  - kind
+                  - name
+              required:
+              - author
+  "/materials":
+    get:
+      summary: List materials
+      tags:
+      - Materials
+      parameters:
+      - name: title
+        in: query
+        schema:
+          type: string
+      - name: author
+        in: query
+        schema:
+          type: string
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: per
+        in: query
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: ok
+    post:
+      summary: Create material
+      tags:
+      - Materials
+      security:
+      - bearerAuth: []
+      parameters: []
+      responses:
+        '201':
+          description: created
+        '401':
+          description: unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                material:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    description:
+                      type: string
+                    kind:
+                      type: string
+                      enum:
+                      - book
+                      - article
+                      - video
+                    status:
+                      type: string
+                      enum:
+                      - draft
+                      - published
+                      - archived
+                    isbn:
+                      type: string
+                    pages:
+                      type: integer
+                    doi:
+                      type: string
+                    duration:
+                      type: integer
+                    author_id:
+                      type: integer
+                  required:
+                  - kind
+                  - status
+                  - author_id
+              required:
+              - material
+  "/materials/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: integer
+      required: true
+      description: Material ID
+    get:
+      summary: Show material
+      tags:
+      - Materials
+      responses:
+        '200':
+          description: ok
+        '404':
+          description: not found
+    patch:
+      summary: Update material (owner only)
+      tags:
+      - Materials
+      security:
+      - bearerAuth: []
+      parameters: []
+      responses:
+        '200':
+          description: updated
+        '401':
+          description: unauthorized
+        '403':
+          description: forbidden (not owner)
+        '404':
+          description: not found
+        '422':
+          description: validation error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                material:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    description:
+                      type: string
+                    status:
+                      type: string
+                      enum:
+                      - draft
+                      - published
+                      - archived
+                    isbn:
+                      type: string
+                    pages:
+                      type: integer
+                    doi:
+                      type: string
+                    duration:
+                      type: integer
+                    author_id:
+                      type: integer
+              required:
+              - material
+    delete:
+      summary: Delete material (owner only)
+      tags:
+      - Materials
+      security:
+      - bearerAuth: []
+      responses:
+        '204':
+          description: no content (deleted)
+        '401':
+          description: unauthorized
+        '403':
+          description: forbidden (not owner)
+        '404':
+          description: not found

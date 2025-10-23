@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
-  devise_for :users, defaults: {format: :json}, controllers: {
-        sessions: 'users/sessions',
-        registrations: 'users/registrations'
+  mount Rswag::Ui::Engine => '/api-docs'
+  mount Rswag::Api::Engine => '/api-docs'
+  devise_for :users, defaults: { format: :json }, controllers: {
+        sessions: "users/sessions",
+        registrations: "users/registrations"
       }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -11,8 +13,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-  
-  resources(:materials)
-  resources(:authors, only: [:index, :show, :create]) # Update implemented but removed for simplicity
 
+  resources(:materials)
+  resources(:authors, only: [ :index, :show, :create ]) # Update implemented but removed for simplicity
 end
