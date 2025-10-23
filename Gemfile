@@ -36,7 +36,7 @@ gem "rswag-api"
 gem "rswag-ui"
 
 group :development, :test do
-  gem "rspec-rails", "~> 6.0"
+  gem "rspec-rails", "~> 8.0"
   gem "factory_bot_rails"
   gem "faker"
 
