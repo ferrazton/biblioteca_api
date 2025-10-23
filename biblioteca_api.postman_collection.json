@@ -1,0 +1,547 @@
+{
+	"info": {
+		"_postman_id": "80e61ccd-b490-4d25-8a56-12b56ed993dc",
+		"name": "Biblioteca API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38779505"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"user\": {\r\n    \"email\": \"test@cin.ufpe.br\",\r\n    \"password\": \"123456\",\r\n    \"password_confirmation\": \"123456\"\r\n  }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/users",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sign in",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const auth = pm.response.headers.get('Authorization');\r",
+							"if (auth) {\r",
+							"  pm.environment.set('token', auth);\r",
+							"  console.log(\"JWT saved:\", auth);\r",
+							"} else {\r",
+							"  pm.environment.unset('token');\r",
+							"  console.log(\"No JWT found\");\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user\": { \r\n        \"email\": \"aaf3@cin.ufpe.br\",\r\n        \"password\": \"123456\"\r\n    }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/users/sign_in",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"users",
+						"sign_in"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create author person",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"author\": {\r\n    \"name\": \"Amyr Klink\",\r\n    \"kind\": \"person\",\r\n    \"birth_date\": \"1955-11-27\"\r\n  }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/authors",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"authors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create author institution",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"author\": {\r\n    \"name\": \"CESAR School\",\r\n    \"kind\": \"institution\",\r\n    \"city\": \"Recife\"\r\n  }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/authors",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"authors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create material book",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"material\": {\r\n    \"title\": \"Mar Sem Fim\",\r\n    \"description\": \"Um verão inteiro viajando em latitudes onde o sol nunca se esconde\",\r\n    \"kind\": \"book\",\r\n    \"status\": \"published\",\r\n    \"isbn\": \"9788571649897\",\r\n    \"pages\": 308,\r\n    \"author_id\": 3\r\n  }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/materials",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"materials"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create material article",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"material\": {\r\n    \"title\": \"Introducao a Engenharia de Software\",\r\n    \"description\": \"Do basico ao avancado\",\r\n    \"kind\": \"article\",\r\n    \"status\": \"draft\",\r\n    \"doi\": \"10.1234/567\",\r\n    \"pages\": 198,\r\n    \"author_id\": 2\r\n  }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/materials",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"materials"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create material video",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"material\": {\r\n    \"title\": \"Palestra Engenharia de Software\",\r\n    \"description\": \"Com professor Fulano\",\r\n    \"kind\": \"video\",\r\n    \"status\": \"archived\",\r\n    \"duration\": 300,\r\n    \"author_id\": 2\r\n  }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/materials",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"materials"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create material book isbn",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"material\": {\r\n    \"kind\": \"book\",\r\n    \"status\": \"published\",\r\n    \"isbn\": \"9780747549475\",\r\n    \"author_id\": 3\r\n  }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/materials",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"materials"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "show authors",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/authors",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"authors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "show authors/id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/authors/4",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"authors",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "show materials",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/materials?page=2&per_page=1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"materials"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						},
+						{
+							"key": "per_page",
+							"value": "1"
+						},
+						{
+							"key": "author",
+							"value": "amyr",
+							"disabled": true
+						},
+						{
+							"key": "description",
+							"value": "novela",
+							"disabled": true
+						},
+						{
+							"key": "kind",
+							"value": "book",
+							"disabled": true
+						},
+						{
+							"key": "status",
+							"value": "published",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "show materials/id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/materials/5",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"materials",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update author",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"author\": {\r\n    \"name\": \"Universidade Federal de Pernambuco\"\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/authors/2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"authors",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update material",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"material\": {\r\n    \"title\": \"O Estrangeiro\"\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/materials/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"materials",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete material",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/materials/2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"materials",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
