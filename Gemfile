@@ -58,4 +58,4 @@ end
 
 gem "kaminari", "~> 1.2"
 
-gem "rubocop", "~> 1.81", require: false
+gem "rubocop", "~> 1.82", require: false
